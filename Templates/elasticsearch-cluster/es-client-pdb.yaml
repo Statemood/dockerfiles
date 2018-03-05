@@ -1,0 +1,19 @@
+# --------------------------------------------
+# Created by Statemood, 2018.01.06
+#            I.am.RuLin@gmail.com
+#
+# Project dockerfiles:
+#    https://github.com/Statemood/dockerfiles
+# --------------------------------------------
+
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: elasticsearch-client
+spec:
+  maxUnavailable: 1
+  minAvailable: 1
+  selector:
+    matchLabels:
+      component: elasticsearch
+      role: client
