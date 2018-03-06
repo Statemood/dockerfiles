@@ -43,7 +43,7 @@ spec:
             cpu: "600m"
             memory: "2G"
           #volumes:
-          ### Option 1: With hostPath ###
+          ### Option 1: With hostPath
           #- name: data-mysql
             #hostPath:
             #  path: /opt/mysql/default
