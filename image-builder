@@ -1,0 +1,47 @@
+#! /bin/bash
+
+# --------------------------------------------
+# Created by Statemood, 2018.03.08
+#            I.am.RuLin@gmail.com
+#
+# Project dockerfiles:
+#    https://github.com/Statemood/dockerfiles
+# --------------------------------------------
+
+# Automatic build docker images
+
+u=""
+p=""
+
+# Build root dir
+ br="/data/build/dockerfiles"
+lib="$br/Dockerfiles/library"
+
+cd $(dirname $br)
+# Remove exist files
+test -d "$br" && rm -rf $br
+
+# Download dockerfiles from github
+git clone https://github.com/Statemood/dockerfiles.git
+
+docker login -u $u -p $p
+
+cd $lib
+for image_name in *
+do
+    for image_tag in $image_name/*
+    do
+        if [ -f "$image_tag/Dockerfile" ]
+        then
+            image="statemood/$image_tag"
+            echo "Build image $image"
+            echo docker build -t $image $image_tag
+
+            echo "Push image $image"
+            docker push $image
+
+        else
+            echo "Error: No Dockerfile found in dir: $image_tag"
+        fi
+    done
+done

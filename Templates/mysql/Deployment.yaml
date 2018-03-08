@@ -18,7 +18,7 @@ spec:
       #  zone: memory
       containers:
       - name: mysql-test
-        image: img.rulin.me/library/mysql:5.7.21
+        image: statemood/mysql:5.7.21
         imagePullPolicy: Always
         env:
         - name:  "MYSQL_CONFIG_FILE"

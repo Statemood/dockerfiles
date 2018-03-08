@@ -6,7 +6,7 @@
 #    https://github.com/Statemood/dockerfiles
 # --------------------------------------------
 
-FROM img.rulin.me/library/jre:8u151
+FROM statemood/jre:8u151
 
 ENV   version=2.5.1
 LABEL MAINTAINER="Lin Ru <Lin.Ru@msn.com>"

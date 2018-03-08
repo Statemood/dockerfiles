@@ -2,12 +2,12 @@
 
 ## Build
 
-    docker build img.rulin.me/library/zipkin:2.5.1 .
+    docker build statemood/zipkin:2.5.1 .
 
 ## Push
 
-    docker push img.rulin.me/library/zipkin:2.5.1
+    docker push statemood/zipkin:2.5.1
 
 ## Pull
 
-    docker pull img.rulin.me/library/zipkin:2.5.1 
+    docker pull statemood/zipkin:2.5.1 

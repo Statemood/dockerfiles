@@ -6,7 +6,7 @@
 #    https://github.com/Statemood/dockerfiles
 # --------------------------------------------
 
-FROM img.rulin.me/library/centos:7
+FROM statemood/centos:7
 
 LABEL MAINTAINER="Lin Ru <Lin.Ru@msn.com>"
 

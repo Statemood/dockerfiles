@@ -16,7 +16,7 @@ spec:
       #  zone: memory
       containers:
       - name: mongodb-test
-        image: img.rulin.me/library/mongodb:3.4.9
+        image: statemood/mongodb:3.4.9
         securityContext:
           privileged: true
           seLinuxOptions:

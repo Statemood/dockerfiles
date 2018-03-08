@@ -32,7 +32,7 @@ spec:
         zone: computational
       containers:
       - name: es-search-data
-        image: img.rulin.me/library/elasticsearch:6.2.2
+        image: statemood/elasticsearch:6.2.2
         imagePullPolicy: Always
         ports:
         - containerPort: 9300

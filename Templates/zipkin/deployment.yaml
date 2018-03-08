@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
       - name: zipkin
-        image: img.rulin.me/library/zipkin:2.5.1
+        image: statemood/zipkin:2.5.1
         imagePullPolicy: Always
         ports:
         - containerPort: 9411

@@ -6,7 +6,7 @@
 #    https://github.com/Statemood/dockerfiles
 # --------------------------------------------
 
-FROM img.rulin.me/library/alpine:3.7
+FROM statemood/alpine:3.7
 
 LABEL Maintainer="Lin.Ru@msn.com"
 
