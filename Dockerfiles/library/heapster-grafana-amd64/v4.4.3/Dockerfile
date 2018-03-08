@@ -6,4 +6,4 @@
 #    https://github.com/Statemood/dockerfiles
 # --------------------------------------------
 
-FROM k8s.gcr.io/kubernetes-dashboard-amd64:v1.8.2
+FROM k8s.gcr.io/heapster-grafana-amd64:v4.4.3
