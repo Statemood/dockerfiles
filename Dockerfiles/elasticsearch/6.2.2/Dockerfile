@@ -10,25 +10,12 @@ FROM statemood/jre:8u151
 
 COPY run.sh /
 
-### Options 1 BEGIN
-##  Get elasticsearch-6.2.2.tar.gz from your downloads server
+ENV  ES_VERSION="6.2.2"
 
 RUN  apk upgrade    && \
-     curl -jsk https://dl.rulin.me/elastic/elasticsearch/elasticsearch-6.2.2.tar.gz | \
+     curl -jsk https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ES_VERSION.tar.gz | \
      tar zxf -      && \
-     mv elasticsearch-6.2.2 elasticsearch && \
+     mv elasticsearch-$ES_VERSION elasticsearch && \
      chmod 755 /run.sh
-
-### Options 2 BEGIN
-##  Copy elasticsearch-6.2.2.tar.gz to container
-##  Uncomment the following commands to use
-
-#COPY elasticsearch-6.2.2.tar.gz /
-#RUN  apk upgrade                          && \
-#     tar zxf /elasticsearch-6.2.2.tar.gz  && \
-#     mv elasticsearch-6.2.2 elasticsearch && \
-#     chmod 755 /run.sh
-
-### Option 2 END
 
 ENTRYPOINT ["/run.sh"]
