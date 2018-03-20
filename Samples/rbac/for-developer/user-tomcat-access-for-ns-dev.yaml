@@ -1,5 +1,6 @@
-# Allow developer tom access & operator to namespace dev 
-
+# Allow developer tom access & operator to namespace dev
+# For more details:
+#     https://github.com/Statemood/documents/blob/master/kubernetes-1.8/create_users_for_developer.md
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
