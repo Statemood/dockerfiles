@@ -1,0 +1,83 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: PROJECT_NAME
+  namespace: NAMESPACE
+spec:
+  replicas: REPLICAS_NUM
+  selector:
+    matchLabels:
+      app: PROJECT_NAME
+  template:
+    metadata:
+      labels:
+        app: PROJECT_NAME
+    spec:
+      nodeSelector:
+        zone: K8S_NODE_ZONE
+      containers:
+      - name: PROJECT_NAME
+        image: DOCKER_REGISTRY/APP_PRJ/APP_SUB:DOCKER_TAG
+        imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: /opt/APP_PRJ/config/APP_CONFIG_DIR
+          name: app-config
+          readOnly: true
+        securityContext:
+          runAsUser:  1000
+          privileged: true
+          seLinuxOptions:
+            user: system_u
+            role: object_r
+            type: fusefs_t
+            level: "s0:c123,c456"
+        ports:
+        - containerPort: APP_PORT
+        env:
+        - name:  "ENV_NAME"
+          value: "APP_ENV"
+        - name:  "ENV_ID"
+          value: "ENVIRONMENT_ID"
+        - name:  "APPNAME"
+          value: "APP_NAME"
+        - name:  "CONFIG_DIR"
+          value: "APP_CONFIG_DIR"
+        - name:  "CONTEXT_FILE"
+          value: "APP_CONTEXT_FILE"
+        - name:  "JAVA_OPTS"
+          value: "-XmsJAVA_MIN_MEM -XmxJAVA_MAX_MEM"
+        - name:  "LOG_REDIS_SERVER"
+          value: "LOG_REDIS_SERVER_V"
+        - name:  "LC_ALL"
+          value: "en_US.UTF-8"
+        resources:
+          limits:
+            cpu: LIMIT_MAX_CPU
+            memory: LIMIT_MAX_MEM
+          requests:
+            cpu: LIMIT_MIN_CPU
+            memory: LIMIT_MIN_MEM
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - "/health_check.sh --url LIVENESS_URL --port APP_PORT --code LIVENESS_HTTPCODE"
+          initialDelaySeconds: LIVENESS_IDS
+          timeoutSeconds: LIVENESS_TIMEOUT
+          periodSeconds: LIVENESS_PERIOD
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - "/health_check.sh --url READINESS_URL --port APP_PORT --code READINESS_HTTPCODE"
+          initialDelaySeconds: READINESS_IDS
+          timeoutSeconds: READINESS_TIMEOUT
+          periodSeconds: READINESS_PERIOD
+      imagePullSecrets:
+      - name: IMAGE_PULL_SECRET
+      volumes:
+      - name: app-config
+        hostPath:
+          path: /sharing/files/APP_PRJ/APP_ENV/config/CONFIG_DIR_NAME
