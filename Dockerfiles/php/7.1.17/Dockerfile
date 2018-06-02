@@ -5,7 +5,6 @@ LABEL MAINTAINER="Lin.Ru@msn.com"
 ENV BUILD_TOOLS="m4 autoconf gcc g++ make file bash"  \
     PHP_LOG="/data/logs/php"                          \
     PHP_VERSION="7.1.17"                              \
-    PHP_YAF_V="3.0.6"                                 \
     PHP_REDIS_V="3.1.4"                               \
     PHP_DEPS="libxml2 libxml2-dev openssl openssl-dev           \
               bzip2 bzip2-dev libcurl curl-dev re2c libevent    \
@@ -27,22 +26,13 @@ RUN apk update                                  && \
     apk add $SYSTEM_CMDS                        && \
     apk add $PHP_DEPS $BUILD_TOOLS              && \
     apk add $PHP_PKGS $PHP_REDIS                && \
-    mkdir /t && cd /t                           && \
     for i in $PHP_EXTS;do apk add php7-$i;done  && \
-    curl -jkLO http://pecl.php.net/get/yaf-${PHP_YAF_V}.tgz && \
-    tar zxf yaf-${PHP_YAF_V}.tgz                && \
-    cd yaf-${PHP_YAF_V}                         && \
-    phpize                                      && \
-    ./configure --with-php-config=php-config    && \
-    make && make install                        && \
     apk del $BUILD_TOOLS                        && \
     test -d "$PHP_LOG" || mkdir -p "$PHP_LOG"   && \
-    rm -rf /t /tmp/*                            && \
-    touch $PHP_LOG/php-fpm.log                     \
-          $PHP_LOG/php-slow.log
+    rm -rf /t /tmp/*                            
 
 COPY files /
 
-ENV SYSTEM_CMDS=""  BUILD_TOOLS=""   PHP_YAF_V=""  \
+ENV SYSTEM_CMDS=""  BUILD_TOOLS=""   PHP_PKGS=""   \
     PHP_REDIS_V=""  PHP_DEPS=""      PHP_REDIS=""  \
-    PHP_EXTS=""     PHP_PKGS=""
+    PHP_EXTS=""
