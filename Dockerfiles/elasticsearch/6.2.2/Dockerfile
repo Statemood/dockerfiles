@@ -13,6 +13,7 @@ COPY run.sh /
 ENV  ES_VERSION="6.2.2"
 
 RUN  apk upgrade    && \
+     adduser -D www && \
      curl -jsk https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ES_VERSION.tar.gz | \
      tar zxf -      && \
      mv elasticsearch-$ES_VERSION elasticsearch && \

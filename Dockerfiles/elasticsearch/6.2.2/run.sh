@@ -19,11 +19,12 @@ then
 
     # path.logs
      log="-Epath.logs=/$name/logs"
+     cfd="/$name/config"
+     cfg="$cfd/$name.yml"
     data="-Epath.data=$home"
-    jvmf="/$name/config/jvm.options"
+    jvmf="$cfd/jvm.options"
 
     test -z "$JAVA_OPTS"        &&    JAVA_OPTS="-Xms1g -Xmx1g"
-    test -z "$ES_JAVA_OPTS"     && ES_JAVA_OPTS="$JAVA_OPTS"
     test -z "$ES_NODE_NAME"     && ES_NODE_NAME="$HOSTNAME"
     test -n "$ES_CLUSTER_NAME"  &&       c_name="-Ecluster.name=$ES_CLUSTER_NAME"
     test -n "$ES_NODE_NAME"     &&       n_name="-Enode.name=$ES_NODE_NAME"
@@ -37,7 +38,7 @@ then
     # Set jvm options to file jvm.options
     sed -i '/-Xm[sx].g/d' $jvmf
 
-    for x in $ES_JAVA_OPTS
+    for x in $JAVA_OPTS
     do
         echo "Set $x"
         echo $x >> $jvmf
@@ -46,9 +47,9 @@ then
     test -d $home || mkdir -p $home
     chown -R $user:$user $home /$name/logs
 
-    echo "Start $name with options: $ES_OPTS"
+    echo "Start $name with options: $ES_OPTS, ES_JAVA_OPTS=$ES_JAVA_OPTS, JAVA_OPTS=$JAVA_OPTS"
 
-    su - $user -c "/bin/sh $cmd $log $data $net $ES_OPTS"
+    sudo -u $user $ES_JAVA_OPTS $cmd $log $data $net $ES_OPTS
 else
     "$@"
 fi

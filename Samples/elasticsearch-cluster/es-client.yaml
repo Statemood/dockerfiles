@@ -40,8 +40,10 @@ spec:
         - containerPort: 9300
           name: transport
         env:
-        - name:  "ES_JAVA_OPTS"
+        - name:  "JAVA_OPTS"
           value: "-Xms1g -Xmx1g"
+        - name:  "ES_JAVA_OPTS"
+          value: "-Dbootstrap.memory_lock=false"
         - name:  "ES_CLUSTER_NAME"
           value: "es-search"
         - name:  "ES_NODE_DATA"
