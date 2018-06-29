@@ -6,10 +6,7 @@ metadata:
   namespace: default
 
 spec:
-  type: NodePort
   ports:
   - port: 27017
-    targetPort: 27017
-    nodePort: 32350
   selector:
     app: mongodb-test

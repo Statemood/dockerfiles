@@ -1,4 +1,4 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 
 metadata:
@@ -7,8 +7,9 @@ metadata:
 
 spec:
   replicas: 1
-  #selector:
-  #    app: mysql-test
+  selector:
+    matchLabels:
+      app: mysql-test
   template:
     metadata:
       labels:
@@ -49,4 +50,4 @@ spec:
             #  path: /opt/mysql/default
           ### Option 2: With Ceph-rbd ###
           #  persistentVolumeClaim:
-          #    claimName: databases-mysql-test
+          #    claimName: data-mysql-test

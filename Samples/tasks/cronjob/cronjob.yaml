@@ -1,0 +1,30 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: cronjob-name
+  namespace: default
+spec:
+  schedule: "*/2 * * * *"
+  concurrencyPolicy: Allow
+  failedJobsHistoryLimit: 3
+  successfulJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          #nodeSelector:
+          #  zone: computational
+          containers:
+          - name: cronjob-name
+            image: image-name
+            imagePullPolicy: Always
+            args:
+            - /job.sh
+            env:
+            - name:  "CRONJOB_NAME"
+              value: "cronjob-name"
+            - name:  "CRONJOB_ID"
+              value: "0"
+          restartPolicy: OnFailure
+          #imagePullSecrets:
+          #- name: image-pull-secret

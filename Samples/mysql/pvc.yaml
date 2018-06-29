@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: default-test
+  name: data-mysql-test
   namespace: default
   annotations:
     volume.beta.kubernetes.io/storage-class: data

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: NAME
+  namespace: db
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: NAME
+  template:
+    metadata:
+      labels:
+        app: NAME
+    spec:
+      #nodeSelector:
+      #  zone: memory
+      containers:
+      - name: NAME
+        image: statemood/redis:4.0.6
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 6379
+        resources:
+          requests:
+            cpu: 200m
+            memory: 256Mi
+          limits:
+            cpu: 300m
+            memory: 512Mi
+        livenessProbe:
+          tcpSocket:
+            port: 6379
+          initialDelaySeconds: 10
+          timeoutSeconds: 3
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: 6379
+          initialDelaySeconds: 10
+          timeoutSeconds: 3
+          periodSeconds: 10
