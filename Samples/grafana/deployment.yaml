@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: grafana
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      nodeSelector:
+        zone: computational
+      containers:
+      - name: grafana
+        image: statmood/grafana:5.2.0
+        imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: /grafana/data
+          name: data
+        securityContext:
+          privileged: true
+        #  seLinuxOptions:
+        #    user: system_u
+        #    role: object_r
+        #    type: fusefs_t
+        #    level: "s0:c123,c456"
+        ports:
+        - containerPort: 3000
+        resources:
+          limits:
+            cpu: 2
+            memory: "4G"
+          requests:
+            cpu: "500m"
+            memory: "1Gi"
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: data-grafana

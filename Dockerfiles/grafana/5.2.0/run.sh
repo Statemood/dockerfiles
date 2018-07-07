@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 
 # --------------------------------------------
 # Created by Statemood, 2018.01.06
@@ -8,7 +8,20 @@
 #    https://github.com/Statemood/dockerfiles
 # --------------------------------------------
 
-th="/tmp/hosts"
-eh="/etc/hosts"
+if [ -z "$@" ]
+then
+    d="/grafana/data"
 
-test -f $th && cat $th >> $eh
+    p="$d/plugins"
+    t="/var/lib/grafana"
+
+    test -d $p || mkdir $p
+    test -d $t || mkdir $t
+
+    ln -s $p $t/plugins
+
+    cd /grafana
+    ./bin/grafana-server
+else
+    "$@"
+fi

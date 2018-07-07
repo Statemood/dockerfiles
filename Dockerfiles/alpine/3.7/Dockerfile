@@ -8,9 +8,14 @@
 
 FROM docker.io/alpine:3.7
 
-COPY files    /
-
-RUN  apk update         && \
-     apk upgrade        && \
-     apk add sudo curl  && \
-     adduser www -D
+RUN  rs="https://mirrors.ustc.edu.cn/alpine/v3.7"   && \
+     rf="/etc/apk/repositories"                     && \
+     tz="Asia/Shanghai"                             && \
+     echo "$rs/main/"        > $rf                  && \
+     echo "$rs/community/"  >> $rf                  && \
+     apk update                                     && \
+     apk upgrade                                    && \
+     apk add curl acl tzdata sudo                   && \
+     cp -rfv /usr/share/zoneinfo/$tz /etc/localtime && \
+     echo "$tz" > /etc/timezone                     && \
+     apk del tzdata 
