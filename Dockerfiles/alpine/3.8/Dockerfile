@@ -6,9 +6,9 @@
 #    https://github.com/Statemood/dockerfiles
 # --------------------------------------------
 
-FROM docker.io/alpine:3.7
+FROM docker.io/alpine:3.8
 
-RUN  rs="https://mirrors.ustc.edu.cn/alpine/v3.7"   && \
+RUN  rs="https://mirrors.ustc.edu.cn/alpine/v3.8"   && \
      rf="/etc/apk/repositories"                     && \
      tz="Asia/Shanghai"                             && \
      echo "$rs/main/"        > $rf                  && \
