@@ -1,4 +1,4 @@
-FROM img.linge.io/library/alpine:3.7
+FROM statemood/alpine:3.7
 
 LABEL MAINTAINER="Lin.Ru@msn.com"
 
