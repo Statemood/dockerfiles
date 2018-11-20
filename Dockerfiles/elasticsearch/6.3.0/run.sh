@@ -11,7 +11,7 @@
 if [ -z "$@" ]
 then
     # Run USER
-    user="$ES_RUN_USER"
+    user="work"
     name="elasticsearch"
     home="/data/$name"
      cmd="/$name/bin/$name"
