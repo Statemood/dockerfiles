@@ -1,10 +1,10 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: cronjob-name
-  namespace: default
+  name: CRONJOB_NAME_V
+  namespace: NAMESPACE_V
 spec:
-  schedule: "*/2 * * * *"
+  schedule: "CRONJOB_TIME_V"
   concurrencyPolicy: Allow
   failedJobsHistoryLimit: 3
   successfulJobsHistoryLimit: 3
@@ -12,19 +12,39 @@ spec:
     spec:
       template:
         spec:
-          #nodeSelector:
-          #  zone: computational
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: provider
+                    operator: In
+                    values:
+                    - K8S_AFFINITY_PROVIDER
+                  - key: role
+                    operator: In
+                    values:
+                    - K8S_AFFINITY_ROLE
+                  - key: region
+                    operator: In
+                    values:
+                    - K8S_AFFINITY_REGION
           containers:
-          - name: cronjob-name
-            image: image-name
-            imagePullPolicy: Always
-            args:
+          - name: CRONJOB_NAME_V
+            image: DOCKER_IMAGE_NAME:DOCKER_TAG
+            imagePullPolicy: IMAGE_PULL_POLICY
+            command:
             - /job.sh
             env:
+            - name:  "APP_ENV"
+              value: "APP_ENV_V"
+            - name:  "APP_ROOT"
+              value: "APP_ROOT_V"
             - name:  "CRONJOB_NAME"
-              value: "cronjob-name"
+              value: "CRONJOB_NAME_V"
             - name:  "CRONJOB_ID"
-              value: "0"
+              value: "CRONJOB_ID_V"
           restartPolicy: OnFailure
-          #imagePullSecrets:
-          #- name: image-pull-secret
+          imagePullSecrets:
+          - name: IMAGE_PULL_SECRET
+# Template end
