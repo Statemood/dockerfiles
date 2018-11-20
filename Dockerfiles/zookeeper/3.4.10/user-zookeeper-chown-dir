@@ -1,0 +1,3 @@
+Cmnd_Alias  INITDATDDIR = /init-dir.sh
+
+zookeeper 	ALL=(ALL) NOPASSWD: INITDATDDIR
