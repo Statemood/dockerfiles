@@ -15,7 +15,7 @@ COPY run.sh     /
 RUN  apk update	                    && \
      apk upgrade	                && \
      n="sonarqube"                  && \
-     v="7.0"                        && \
+     v="7.1"                        && \
      curl -sLO https://sonarsource.bintray.com/Distribution/$n/$n-$v.zip && \
      unzip -q $n-$v.zip             && \
      mv $n-$v $n                    && \
