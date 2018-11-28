@@ -6,7 +6,7 @@
 #    https://github.com/Statemood/dockerfiles
 # --------------------------------------------
 
-FROM statemood/jre:8u151
+FROM statemood/jre:8u181
 
 COPY run.sh /
 
