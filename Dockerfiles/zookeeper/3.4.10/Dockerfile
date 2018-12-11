@@ -2,7 +2,7 @@ FROM statemood/jre:8u181
 
 RUN apk update                              && \
     apk upgrade                             && \
-    apk add bash                            && \
+    apk add bash sudo                       && \
     ZK=zookeeper                            && \
     ZK_USER=$ZK                             && \
     ZK_DATA_DIR=/var/lib/$ZK/data           && \
