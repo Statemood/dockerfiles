@@ -1,4 +1,4 @@
-FROM statemood/jre:8u171
+FROM statemood/jre:8u181
 
 RUN apk update                              && \
     apk upgrade                             && \
