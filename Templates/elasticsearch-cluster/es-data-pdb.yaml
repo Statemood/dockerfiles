@@ -10,6 +10,7 @@ apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
   name: elasticsearch-data
+  namespace: default
 spec:
   maxUnavailable: 1
   selector:
