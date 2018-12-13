@@ -14,7 +14,7 @@ ENV  ES_RUN_USER    "www"
 RUN  apk update                 && \
      apk upgrade                && \
      apk add bash coreutils     && \
-     es_ver="6.2.2"             && \
+     es_ver="5.6.14"            && \
      e="elasticsearch"          && \
      curl -jk https://artifacts.elastic.co/downloads/$e/$s\e-$es_ver.tar.gz | \
      tar zxf -                                      && \
