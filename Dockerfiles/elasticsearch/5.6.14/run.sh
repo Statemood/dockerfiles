@@ -51,7 +51,7 @@ then
     es_cmd="$ES_JAVA_OPTS $cmd $log $data $net $ES_OPTS"
     echo "Start $name with cmd: $es_cmd"
 
-    if [ -z "$K8S_ES_DEBUG" = "true" ]
+    if [ "$K8S_ES_DEBUG" = "true" ]
     then
         echo "`date +'%F %T'`Waiting for debug, 600s"
         sleep 600
