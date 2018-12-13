@@ -62,7 +62,7 @@ spec:
               - key: provider
                 operator: In
                 values:
-                - aliyun
+                - provider-name
             - matchExpressions:
               - key: role
                 operator: In

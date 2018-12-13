@@ -29,8 +29,15 @@ spec:
         component: elasticsearch
         role: master
     spec:
-      nodeSelector:
-        zone: computational
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: key
+                operator: In
+                values:
+                - value
       containers:
       - name: es-search-master
         image: statemood/elasticsearch:6.2.2

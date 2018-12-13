@@ -29,8 +29,15 @@ spec:
         component: elasticsearch
         role: data
     spec:
-      nodeSelector:
-        zone: computational
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: key
+                operator: In
+                values:
+                - value
       containers:
       - name: es-search-data
         image: statemood/elasticsearch:6.2.2
