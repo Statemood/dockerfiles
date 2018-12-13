@@ -45,7 +45,7 @@ then
     done
 
     test -d $home || mkdir -p $home
-    chown -R $user:$user $home /$name/logs
+    chown -R $user:$user $home /$name/logs $cfd
 
     echo "Start $name with options: $ES_OPTS, ES_JAVA_OPTS=$ES_JAVA_OPTS, JAVA_OPTS=$JAVA_OPTS"
 
