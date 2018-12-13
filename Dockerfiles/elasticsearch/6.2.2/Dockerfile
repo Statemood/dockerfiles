@@ -16,7 +16,7 @@ RUN  apk update                 && \
      apk add bash coreutils     && \
      es_ver="6.2.2"             && \
      e="elasticsearch"          && \
-     curl -jk https://artifacts.elastic.co/downloads/$e/$s\e-$es_ver.tar.gz | \
+     curl -jk https://artifacts.elastic.co/downloads/$e/$e-$es_ver.tar.gz | \
      tar zxf -                                      && \
      id $ES_RUN_USER || adduser -D $ES_RUN_USER     && \
      mv $e-$es_ver $e                               && \
