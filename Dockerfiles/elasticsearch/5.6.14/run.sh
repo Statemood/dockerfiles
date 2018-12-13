@@ -47,9 +47,10 @@ then
     test -d $home || mkdir -p $home
     chown -R $user:$user $home /$name/logs $cfd
 
-    echo "Start $name with options: $ES_OPTS, ES_JAVA_OPTS=$ES_JAVA_OPTS, JAVA_OPTS=$JAVA_OPTS"
+    es_cmd="$ES_JAVA_OPTS $cmd $log $data $net $ES_OPTS"
+    echo "Start $name with cmd: $es_cmd"
 
-    sudo -u $user $ES_JAVA_OPTS $cmd $log $data $net $ES_OPTS
+    sudo -u $user $es_cmd 
 else
     "$@"
 fi
