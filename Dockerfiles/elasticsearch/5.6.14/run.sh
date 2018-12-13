@@ -44,7 +44,8 @@ then
         echo $x >> $jvmf
     done
 
-    test -d $home || mkdir -p $home
+    test -d $home       || mkdir -p $home
+    test -d /$name/logs || mkdir -p /$name/logs
     chown -R $user:$user $home /$name/logs $cfd
 
     es_cmd="$ES_JAVA_OPTS $cmd $log $data $net $ES_OPTS"
