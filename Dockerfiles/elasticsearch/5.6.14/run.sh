@@ -48,7 +48,7 @@ then
     test -d /$name/logs || mkdir -p /$name/logs
     chown -R $user:$user $home /$name/logs $cfd
 
-    es_cmd="$ES_JAVA_OPTS $cmd $log $data $net $ES_OPTS"
+    es_cmd="$cmd $ES_JAVA_OPTS $log $data $net $ES_OPTS"
     echo "Start $name with cmd: $es_cmd"
 
     if [ "$K8S_ES_DEBUG" = "true" ]

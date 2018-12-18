@@ -1,13 +1,13 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: data-es-search-data-0
+  name: data-rabbitmq-0
   namespace: default
-  annotations: 
+  annotations:
     volume.beta.kubernetes.io/storage-class: data
 spec:
   accessModes:
-    - ReadWriteOnce 
+    - ReadWriteOnce
   resources:
     requests:
-      storage: 10Gi
+      storage: 5Gi
