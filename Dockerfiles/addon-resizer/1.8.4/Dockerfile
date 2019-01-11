@@ -6,4 +6,4 @@
 #    https://github.com/Statemood/dockerfiles
 # --------------------------------------------
 
-FROM k8s.gcr.io/addon-resizer:1.8.1
+FROM k8s.gcr.io/addon-resizer:1.8.4
