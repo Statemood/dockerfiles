@@ -17,13 +17,20 @@ then
 
     test -f "$MYSQL_CONFIG_FILE"    && cp -fv "$MYSQL_CONFIG_FILE" /etc/my.cnf
 
-    test -z "$MYSQL_RUN_USER"       &&  MYSQL_RUN_USER="mysql"
-    test -z "$MYSQL_RUN_GROUP"      && MYSQL_RUN_GROUP="mysql"
-    test -z "$MYSQL_DATA_DIR"       &&  MYSQL_DATA_DIR="/var/lib/mysql"
+    test -v MYSQL_RUN_USER       ||  MYSQL_RUN_USER="mysql"
+    test -v MYSQL_RUN_GROUP      || MYSQL_RUN_GROUP="mysql"
+    test -v MYSQL_DATA_DIR       ||  MYSQL_DATA_DIR="/var/lib/mysql"
 
-    test -z "$MYSQL_ROOT_PASSWORD"  && MYSQL_ROOT_PASSWORD="$mysql_default_password"
+    test -v MYSQL_ROOT_PASSWORD  || MYSQL_ROOT_PASSWORD="$mysql_default_password"
 
     test -d "$MYSQL_DATA_DIR/lost+found" && rm -rf "$MYSQL_DATA_DIR/lost+found"
+
+    if [ "$MYSQL_ROLE" = "replica" ]
+    then
+        test -v MYSQL_SERVER_ID || MYSQL_SERVER_ID=2
+        echo "Set Server ID to $MYSQL_SERVER_ID"
+        sed -i "s/server-id .*/server-id = $MYSQL_SERVER_ID/" /etc/my.cnf 
+    fi 
 
     if [ -d "$MYSQL_DATA_DIR/mysql" ] && [ -d "$MYSQL_DATA_DIR/sys" ]
     then

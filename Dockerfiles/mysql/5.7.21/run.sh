@@ -25,6 +25,12 @@ then
 
     test -d "$MYSQL_DATA_DIR/lost+found" && rm -rf "$MYSQL_DATA_DIR/lost+found"
 
+    if [ "$MYSQL_ROLE" = "replica" ]
+    then
+        echo "Set Server ID to 2"
+        sed -i "s/server-id .*/server-id = 2/" /etc/my.cnf 
+    fi 
+
     if [ -d "$MYSQL_DATA_DIR/mysql" ] && [ -d "$MYSQL_DATA_DIR/sys" ]
     then
         echo "Exist mysql data detected, loading... "
