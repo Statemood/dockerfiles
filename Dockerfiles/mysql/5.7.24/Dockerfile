@@ -18,7 +18,7 @@ RUN yum update  -y                              && \
     yum clean all                               && \
     v="5.7.24"                                  && \
     n="mysql-community-server-minimal"          && \
-    p="$p-$v-1.el7.x86_64.rpm"                  && \
+    p="$n-$v-1.el7.x86_64.rpm"                  && \
     rpm -ivh https://mirrors.tuna.tsinghua.edu.cn/mysql/downloads/MySQL-5.7/$p && \
     chmod 755  /run.sh && rm -rf /var/lib/mysql
 
