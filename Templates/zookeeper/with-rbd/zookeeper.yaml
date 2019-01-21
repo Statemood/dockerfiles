@@ -79,10 +79,13 @@ spec:
       containers:
       - name: k8szk
         imagePullPolicy: Always
-        image: statemood/zookeeper:3.4.10
+        image: statemood/zookeeper:3.4.13
         resources:
           requests:
-            memory: "2Gi"
+            memory: "521Mi"
+            cpu: "500m"
+          limits:
+            memory: "512Mi"
             cpu: "500m"
         ports:
         - containerPort: 2181

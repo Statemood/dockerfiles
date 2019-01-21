@@ -1,0 +1,78 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: kafka
+  namespace: default
+spec:
+  serviceName: kafka-svc
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: kafka
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: "app"
+                    operator: In
+                    values: 
+                    - kafka
+              topologyKey: "kubernetes.io/hostname"
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+             - weight: 1
+               podAffinityTerm:
+                 labelSelector:
+                    matchExpressions:
+                      - key: "app"
+                        operator: In
+                        values: 
+                        - zk
+                 topologyKey: "kubernetes.io/hostname"
+      terminationGracePeriodSeconds: 180
+      containers:
+      - name: k8skafka
+        imagePullPolicy: Always
+        image: statemood/kafka:2.1.0
+        command: 
+        - sh
+        - -c 
+        - "kafka-server-start.sh /server.properties --override broker.id=${HOSTNAME##*-}"
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: 500m
+        ports:
+        - containerPort: 9093
+          name: server
+        env:
+        - name: KAFKA_HEAP_OPTS
+          value : "-Xmx512M -Xms512M"
+        - name: KAFKA_OPTS
+          value: "-Dlogging.level=INFO"
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/kafka
+        - name: config
+          mountPath: /opt/kafka/config/server.properties
+          subPath: server.properties 
+        readinessProbe:
+          exec:
+           command: 
+            - sh 
+            - -c 
+            - "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server=localhost:9093"
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 20Gi

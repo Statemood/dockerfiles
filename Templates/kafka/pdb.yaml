@@ -1,0 +1,10 @@
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: kafka-pdb
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: kafka
+  minAvailable: 2
