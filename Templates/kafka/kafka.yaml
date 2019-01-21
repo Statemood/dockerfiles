@@ -68,6 +68,11 @@ spec:
       securityContext:
         runAsUser: 1000
         fsGroup: 1000
+      volumes:
+      - name: config
+        configMap:
+          defaultMode: 0644
+          name: kafka
   volumeClaimTemplates:
   - metadata:
       name: data
