@@ -40,7 +40,9 @@ spec:
         command: 
         - sh
         - -c 
-        - "kafka-server-start.sh /server.properties --override broker.id=${HOSTNAME##*-}"
+        - "/opt/kafka/bin/kafka-server-start.sh \
+           /opt/kafka/config/server.properties  \
+           --override broker.id=${HOSTNAME##*-}"
         resources:
           requests:
             memory: "1Gi"

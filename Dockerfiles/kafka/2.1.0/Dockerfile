@@ -1,6 +1,7 @@
 FROM statemood/jre:8u181
 
 RUN  apk update                 && \
+     apk add bash               && \
      kn=kafka                   && \
      ku=$kn                     && \
      kv=2.1.0                   && \
