@@ -18,7 +18,7 @@ spec:
                 matchExpressions:
                   - key: "app"
                     operator: In
-                    values: 
+                    values:
                     - kafka
               topologyKey: "kubernetes.io/hostname"
         podAffinity:
@@ -29,20 +29,28 @@ spec:
                     matchExpressions:
                       - key: "app"
                         operator: In
-                        values: 
+                        values:
                         - zk
                  topologyKey: "kubernetes.io/hostname"
       terminationGracePeriodSeconds: 180
+      initContainers:
+      - name: init-data-dir
+        image: busybox
+        command:
+        - sh
+        - -c
+        - rm -rf /data/lost+found
+        volumeMounts:
+        - name: data
+          mountPath: /data
       containers:
       - name: k8skafka
         imagePullPolicy: Always
         image: statemood/kafka:2.1.0
-        command: 
+        command:
         - sh
-        - -c 
-        - "/opt/kafka/bin/kafka-server-start.sh \
-           /opt/kafka/config/server.properties  \
-           --override broker.id=${HOSTNAME##*-}"
+        - -c
+        - "/opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties --override broker.id=${HOSTNAME##*-}"
         resources:
           requests:
             memory: "1Gi"
@@ -60,16 +68,16 @@ spec:
           mountPath: /var/lib/kafka
         - name: config
           mountPath: /opt/kafka/config/server.properties
-          subPath: server.properties 
+          subPath: server.properties
         readinessProbe:
           exec:
-           command: 
-            - sh 
-            - -c 
-            - "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server=localhost:9093"
+           command:
+            - sh
+            - -c
+            - "/opt/kafka/bin/kafka-topics.sh --list --zookeeper zk-0.zk-svc:2181,zk-1.zk-svc:2181,zk-2.zk-svc:2181"
       securityContext:
-        runAsUser: 1000
-        fsGroup: 1000
+        runAsUser: 205
+        fsGroup: 205
       volumes:
       - name: config
         configMap:

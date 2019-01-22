@@ -69,7 +69,6 @@ data:
     fetch.purgatory.purge.interval.requests=1000 
     group.max.session.timeout.ms=300000 
     group.min.session.timeout.ms=6000 
-    inter.broker.protocol.version=0.10.2-IV0 
     log.cleaner.backoff.ms=15000 
     log.cleaner.dedupe.buffer.size=134217728 
     log.cleaner.delete.retention.ms=86400000 
