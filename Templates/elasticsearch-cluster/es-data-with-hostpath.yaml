@@ -47,7 +47,7 @@ spec:
           name: transport
         env:
         - name:  "JAVA_OPTS"
-          value: "-Xms1g -Xmx1g"
+          value: "-Xms1g -Xmx1g -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
         - name:  "ES_JAVA_OPTS"
           value: "-Dbootstrap.memory_lock=false"
         - name:  "ES_CLUSTER_NAME"
@@ -62,11 +62,11 @@ spec:
           value: "elasticsearch-discovery"
         resources:
           limits:
-            cpu: "500m"
-            memory: "1500Mi"
+            cpu: "1"
+            memory: 1500Mi
           requests:
-            cpu: "200m"
-            memory: "1Gi"
+            cpu: "1"
+            memory: 1500Mi
         livenessProbe:
           tcpSocket:
             port: 9300
@@ -79,3 +79,12 @@ spec:
           initialDelaySeconds: 60
           timeoutSeconds: 5
           periodSeconds: 20
+        volumeMounts:
+        - name: data-es
+          mountPath: /data
+      volumes:
+      - name: data-es
+        hostPath:
+          # If replicas = 2, create dir:
+          #     es-search-data-0 and es-search-data-1 in /data/es/
+          path: /data/es/es-search-data

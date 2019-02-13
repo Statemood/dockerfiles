@@ -49,7 +49,7 @@ spec:
           name: transport
         env:
         - name:  "JAVA_OPTS"
-          value: "-Xms1g -Xmx1g"
+          value: "-Xms1g -Xmx1g -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
         - name:  "ES_JAVA_OPTS"
           value: "-Dbootstrap.memory_lock=false"
         - name:  "ES_CLUSTER_NAME"
