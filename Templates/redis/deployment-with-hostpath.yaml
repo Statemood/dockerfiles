@@ -2,23 +2,30 @@ apiVersion: apps/v1
 kind: Deployment
 
 metadata:
-  name: NAME
-  namespace: db
+  name: redis-test
+  namespace: default
 
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: NAME
+      app: redis-test
   template:
     metadata:
       labels:
-        app: NAME
+        app: redis-test
     spec:
-      #nodeSelector:
-      #  zone: memory
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: key
+                operator: In
+                values:
+                - value
       containers:
-      - name: NAME
+      - name: redis
         image: statemood/redis:4.0.6
         imagePullPolicy: Always
         ports:
@@ -42,3 +49,10 @@ spec:
           initialDelaySeconds: 10
           timeoutSeconds: 3
           periodSeconds: 10
+        volumeMounts:
+        - name: data-redis
+          mountPath: /var/lib/redis
+      volumes:
+      - name: data-redis
+        hostPath:
+          path: /data/redis/redis-test
