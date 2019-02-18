@@ -49,7 +49,7 @@ then
 
     echo "Start $name with options: $ES_OPTS, ES_JAVA_OPTS=$ES_JAVA_OPTS, JAVA_OPTS=$JAVA_OPTS"
 
-    sudo -u $user $cmd $ES_JAVA_OPTS $log $data $net $ES_OPTS
+    sudo -u $user $cmd $log $data $net $ES_OPTS
 else
     "$@"
 fi
