@@ -26,7 +26,7 @@ spec:
       priorityClassName: system-node-critical
       containers:
         - name: prometheus-node-exporter
-          image: img.linge.io/library/node-exporter:v0.15.2
+          image: "prom/node-exporter:v0.15.2"
           imagePullPolicy: "IfNotPresent"
           args:
             - --path.procfs=/host/proc

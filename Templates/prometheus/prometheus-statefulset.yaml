@@ -28,7 +28,7 @@ spec:
       serviceAccountName: prometheus
       initContainers:
       - name: "init-chown-data"
-        image: img.linge.io/library/busybox:1.30.0
+        image: "busybox:latest"
         imagePullPolicy: "IfNotPresent"
         command: ["chown", "-R", "65534:65534", "/data"]
         volumeMounts:
@@ -55,7 +55,7 @@ spec:
               memory: 10Mi
 
         - name: prometheus-server
-          image: img.linge.io/library/prometheus:v2.2.1
+          image: "prom/prometheus:v2.2.1"
           imagePullPolicy: "IfNotPresent"
           args:
             - --config.file=/etc/config/prometheus.yml
@@ -106,4 +106,4 @@ spec:
         - ReadWriteOnce
       resources:
         requests:
-          storage: "16Gi"
+          storage: "30Gi"
