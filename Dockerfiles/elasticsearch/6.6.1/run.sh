@@ -11,8 +11,8 @@
 if [ -z "$@" ]
 then
     # Run USER
-    user="work"
     name="elasticsearch"
+    user="$name"
     home="/data/$name"
      cmd="/$name/bin/$name"
      net="-Enetwork.host=0.0.0.0"
@@ -33,7 +33,7 @@ then
     test -n "$ES_HTTP_ENABLED"  &&      es_http="-Ehttp.enabled=$ES_HTTP_ENABLED"
     test -n "$ES_UNICAST_HOSTS" &&   ES_UNICAST="-Ediscovery.zen.ping.unicast.hosts=$ES_UNICAST_HOSTS"
 
-    ES_OPTS="$c_name $n_name $es_data $es_master $es_http $ES_UNICAST"
+    ES_OPTS="$c_name $n_name $es_data $es_master $es_http $ES_UNICAST $ES_EXTRA_OPTS"
 
     # Set jvm options to file jvm.options
     sed -i '/-Xm[sx].g/d' $jvmf

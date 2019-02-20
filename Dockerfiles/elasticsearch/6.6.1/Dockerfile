@@ -17,6 +17,7 @@ RUN  apk update                             && \
      apk add bash coreutils sudo            && \
      v="$ES_VERSION"                        && \
      e="elasticsearch"                      && \
+     adduser -D -g 1000 $e                  && \
      curl -jk https://artifacts.elastic.co/downloads/$e/$e-$v.tar.gz | \
      tar zxf -                              && \
      mv $e-$v $e                            && \
