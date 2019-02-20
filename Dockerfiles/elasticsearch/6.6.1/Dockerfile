@@ -6,11 +6,11 @@
 #    https://github.com/Statemood/dockerfiles
 # --------------------------------------------
 
-FROM statemood/jre:8u181
+FROM statemood/jre:8u191
 
 COPY run.sh /
 
-ENV  ES_VERSION="6.3.0"
+ENV  ES_VERSION="6.6.1"
 
 RUN  apk update                             && \
      apk upgrade                            && \
@@ -21,6 +21,7 @@ RUN  apk update                             && \
      tar zxf -                              && \
      mv $e-$v $e                            && \
      rm -rfv $s/bin/*.bat $e/bin/*.exe      && \
+     chmod 644 $ES_CFG/*                    && \
      chmod 755 /run.sh
 
 ENTRYPOINT ["/run.sh"]
