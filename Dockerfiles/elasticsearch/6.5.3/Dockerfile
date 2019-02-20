@@ -21,6 +21,7 @@ RUN  apk update                             && \
      tar zxf -                              && \
      mv $e-$v $e                            && \
      rm -rfv $s/bin/*.bat $e/bin/*.exe      && \
+     chmod 644 /$e/config/*                 && \
      chmod 755 /run.sh
 
 ENTRYPOINT ["/run.sh"]
