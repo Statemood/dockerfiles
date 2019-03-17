@@ -1,0 +1,48 @@
+apiVersion: apps/v1beta2
+kind: StatefulSet
+
+metadata:
+  name: mysql-mm
+  namespace: mysql
+
+spec:
+  serviceName: mysql-mm
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-mm
+  template:
+    metadata:
+      labels:
+        app: mysql-mm
+        role: master
+    spec:
+      containers:
+      - name: mysql-mm
+        image: statemood/mysql:5.7.25
+        imagePullPolicy: Always
+        env:
+        - name:  "MYSQL_CONFIG_FILE"
+          value: "/var/lib/mysql/my.cnf"
+        - name:  "MYSQL_ROOT_PASSWORD"
+          value: "qwe123456"
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: data
+        ports:
+        - containerPort: 3306
+        resources:
+          limits:
+            cpu: "600m"
+            memory: "2G"
+          requests:
+            cpu: "600m"
+            memory: "2G"
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 50Gi
