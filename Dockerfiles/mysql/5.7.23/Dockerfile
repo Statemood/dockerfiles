@@ -13,7 +13,7 @@ LABEL MAINTAINER="Lin Ru <Lin.Ru@msn.com>"
 COPY run.sh             /
 COPY init.password.sql  /
 
-ENV MYSQL_VERSION 5.7.24
+ENV MYSQL_VERSION 5.7.23
 
 RUN yum update  -y  && \
     yum install -y libaio-devel numactl-libs && \
