@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: data-es-search-data-0
+  name: data-es-data-2
   namespace: default
   annotations: 
     volume.beta.kubernetes.io/storage-class: data

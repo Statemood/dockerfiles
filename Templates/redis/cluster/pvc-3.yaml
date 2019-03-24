@@ -1,13 +1,13 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: data-es-search-data-1
-  namespace: default
-  annotations: 
+  name: data-redis-3
+  namespace: redis
+  annotations:
     volume.beta.kubernetes.io/storage-class: data
 spec:
   accessModes:
-    - ReadWriteOnce 
+    - ReadWriteOnce
   resources:
     requests:
-      storage: 10Gi
+      storage: 5Gi

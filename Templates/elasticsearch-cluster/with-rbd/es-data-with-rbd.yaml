@@ -10,7 +10,7 @@ apiVersion: apps/v1beta2
 kind: StatefulSet
 
 metadata:
-  name: es-search-data
+  name: es-data
   namespace: default
   labels:
     component: elasticsearch
@@ -21,18 +21,25 @@ spec:
   serviceName: elasticsearch
   selector:
     matchLabels:
-      app: es-search-data
+      app: es-data
   template:
     metadata:
       labels:
-        app: es-search-data
+        app: es-data
         component: elasticsearch
         role: data
     spec:
-      nodeSelector:
-        zone: computational
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: key
+                operator: In
+                values:
+                - value
       containers:
-      - name: es-search-data
+      - name: es-data
         image: statemood/elasticsearch:6.2.2
         imagePullPolicy: Always
         ports:
@@ -42,9 +49,9 @@ spec:
         - name:  "JAVA_OPTS"
           value: "-Xms1g -Xmx1g -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
         - name:  "ES_JAVA_OPTS"
-          value: "-Dbootstrap.memory_lock=false"
+          value: "-Dbootstrap.memory_lock=true -Xms1g -Xmx1g"
         - name:  "ES_CLUSTER_NAME"
-          value: "es-search"
+          value: "es"
         - name:  "ES_NODE_DATA"
           value: "true"
         - name:  "ES_NODE_MASTER"
