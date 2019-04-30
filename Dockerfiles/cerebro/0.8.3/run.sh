@@ -10,7 +10,7 @@
 
 if [ -z "$@" ]
 then
-    /bin/sh /logstash/bin/logstash -f /logstash/config
+    /cerebro/bin/cerebro
 else
     "$@"
 fi

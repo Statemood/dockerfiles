@@ -340,6 +340,9 @@ spec:
           resources:
             limits:
               cpu: 2
-              memory: 4Gi
+              memory: 2Gi
+            requests:
+              cpu: 2
+              memory: 2Gi
           securityContext:
             runAsNonRoot: false

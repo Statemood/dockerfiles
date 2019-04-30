@@ -36,7 +36,8 @@ ZK_CONFIG_FILE="$ZK_CONF_DIR/zoo.cfg"
 LOGGER_PROPS_FILE="$ZK_CONF_DIR/log4j.properties"
 JAVA_ENV_FILE="$ZK_CONF_DIR/java.env"
 HOST=`hostname -s`
-DOMAIN=`hostname -d`
+
+test -z "$ZK_DOMAIN" && DOMAIN=`hostname -d` || DOMAIN=$ZK_DOMAIN
 
 function print_servers() {
     for (( i=1; i<=$ZK_REPLICAS; i++ ))

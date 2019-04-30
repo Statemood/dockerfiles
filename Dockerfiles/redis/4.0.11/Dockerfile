@@ -13,7 +13,6 @@ RUN  apk update               && \
      chmod -v 755 /run.sh     && \
      sed -i 's/^bind .*/bind 0.0.0.0/'      $REDIS_CONF && \
      sed -i 's/^daemonize .*/daemonize no/' $REDIS_CONF && \
-     echo 'cluster-enabled yes'         >>  $REDIS_CONF && \
      chown 1000 $REDIS_DIRS
 
 ENTRYPOINT ["/run.sh"]
