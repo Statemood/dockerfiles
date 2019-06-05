@@ -6,7 +6,7 @@
 #    https://github.com/Statemood/dockerfiles
 # --------------------------------------------
 
-FROM statemood/alpine:3.7
+FROM statemood/alpine:3.9
 
 RUN  apk update         && \
      apk add "openjdk8~=8.212"
