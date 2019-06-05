@@ -2,12 +2,12 @@
 
 ## Build
 
-    docker build statemood/alpine:3.7 .
+    docker build statemood/alpine:3.9 .
 
 ## Push
 
-    docker push statemood/alpine:3.7
+    docker push statemood/alpine:3.9
 
 ## Pull
 
-    docker pull statemood/alpine:3.7
+    docker pull statemood/alpine:3.9
