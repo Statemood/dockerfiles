@@ -1,83 +1,10 @@
----
-
 apiVersion: v1
 kind: Namespace
 metadata:
   name: ingress-nginx
----
-
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: default-http-backend-public
   labels:
-    app: default-http-backend-public
-  namespace: ingress-nginx
-spec:
-  replicas: 4
-  selector:
-    matchLabels:
-      app: default-http-backend-public
-  template:
-    metadata:
-      labels:
-        app: default-http-backend-public
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: provider
-                operator: In
-                values:
-                - aliyun
-              - key: role
-                operator: In
-                values:
-                - common
-              - key: region
-                operator: In
-                values:
-                - beijing
-      terminationGracePeriodSeconds: 60
-      containers:
-      - name: default-http-backend-public
-        # Any image is permissible as long as:
-        # 1. It serves a 404 page at /
-        # 2. It serves 200 on a /healthz endpoint
-        image: statemood/defaultbackend:1.4
-        livenessProbe:
-          httpGet:
-            path: /healthz
-            port: 8080
-            scheme: HTTP
-          initialDelaySeconds: 30
-          timeoutSeconds: 5
-        ports:
-        - containerPort: 8080
-        resources:
-          limits:
-            cpu: 500m
-            memory: 512Mi
-          requests:
-            cpu: 100m
-            memory: 256Mi
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: default-http-backend-public
-  namespace: ingress-nginx
-  labels:
-    app: default-http-backend-public
-spec:
-  ports:
-  - port: 80
-    targetPort: 8080
-  selector:
-    app: default-http-backend-public
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
 ---
 
 kind: ConfigMap
@@ -86,46 +13,52 @@ metadata:
   name: nginx-configuration-public
   namespace: ingress-nginx
   labels:
-    app: ingress-nginx-public
-data:
-  max-worker-connections: "16384"
-  worker-rlimit-nofile: "100000"
-  log-format-upstream: '{"time_local": "$time_local", "remote_addr": "$remote_addr", "http_x_forwarded_for": "$http_x_forwarded_for", "remote_user": "$remote_user", "status": "$status", "body_bytes_sent": "$body_bytes_sent", "bytes_sent": "$bytes_sent", "request_time": "$request_time", "request_method": "$request_method", "host": "$host","uri": "$uri", "query_string": "$query_string","http_referer": "$http_referer","http_user_agent": "$http_user_agent"}'
-  ssl-ciphers: "ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA"
-  ssl-protocols: "TLSv1 TLSv1.1 TLSv1.2"
-  worker-processes: "8"
----
+    app.kubernetes.io/name: ingress-nginx-public
+    app.kubernetes.io/part-of: ingress-nginx-public
 
+---
 kind: ConfigMap
 apiVersion: v1
 metadata:
   name: tcp-services-public
   namespace: ingress-nginx
----
+  labels:
+    app.kubernetes.io/name: ingress-nginx-public
+    app.kubernetes.io/part-of: ingress-nginx-public
 
+---
 kind: ConfigMap
 apiVersion: v1
 metadata:
   name: udp-services-public
   namespace: ingress-nginx
----
+  labels:
+    app.kubernetes.io/name: ingress-nginx-public
+    app.kubernetes.io/part-of: ingress-nginx-public
 
+---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: nginx-ingress-serviceaccount-public
+  name: nginx-ingress-serviceaccount
   namespace: ingress-nginx
+  labels:
+    app.kubernetes.io/name: ingress-nginx-public
+    app.kubernetes.io/part-of: ingress-nginx-public
 
 ---
-
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
-  name: nginx-ingress-clusterrole-public
+  name: nginx-ingress-clusterrole
+  labels:
+    app.kubernetes.io/name: ingress-nginx-public
+    app.kubernetes.io/part-of: ingress-nginx-public
 rules:
   - apiGroups:
       - ""
     resources:
+      - configmaps
       - endpoints
       - nodes
       - pods
@@ -133,16 +66,6 @@ rules:
     verbs:
       - list
       - watch
-  - apiGroups:
-      - ""
-    resources:
-      - configmaps
-    verbs:
-      - get
-      - list
-      - watch
-      - create
-      - update
   - apiGroups:
       - ""
     resources:
@@ -168,10 +91,10 @@ rules:
   - apiGroups:
       - ""
     resources:
-        - events
+      - events
     verbs:
-        - create
-        - patch
+      - create
+      - patch
   - apiGroups:
       - "extensions"
     resources:
@@ -180,12 +103,14 @@ rules:
       - update
 
 ---
-
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: Role
 metadata:
-  name: nginx-ingress-role-public
+  name: nginx-ingress-role
   namespace: ingress-nginx
+  labels:
+    app.kubernetes.io/name: ingress-nginx-public
+    app.kubernetes.io/part-of: ingress-nginx-public
 rules:
   - apiGroups:
       - ""
@@ -223,54 +148,64 @@ rules:
       - get
 
 ---
-
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: RoleBinding
 metadata:
-  name: nginx-ingress-role-nisa-binding-public
+  name: nginx-ingress-role-nisa-binding
   namespace: ingress-nginx
+  labels:
+    app.kubernetes.io/name: ingress-nginx-public
+    app.kubernetes.io/part-of: ingress-nginx-public
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: nginx-ingress-role-election-id-public
+  name: nginx-ingress-role
 subjects:
   - kind: ServiceAccount
-    name: nginx-ingress-serviceaccount-public
+    name: nginx-ingress-serviceaccount
     namespace: ingress-nginx
 
 ---
-
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
 metadata:
-  name: nginx-ingress-clusterrole-nisa-binding-public
+  name: nginx-ingress-clusterrole-nisa-binding
+  labels:
+    app.kubernetes.io/name: ingress-nginx-public
+    app.kubernetes.io/part-of: ingress-nginx-public
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: nginx-ingress-clusterrole-public
+  name: nginx-ingress-clusterrole
 subjects:
   - kind: ServiceAccount
-    name: nginx-ingress-serviceaccount-public
+    name: nginx-ingress-serviceaccount
     namespace: ingress-nginx
+
 ---
 
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-ingress-controller-public
-  namespace: ingress-nginx 
+  namespace: ingress-nginx
+  labels:
+    app.kubernetes.io/name: ingress-nginx-public
+    app.kubernetes.io/part-of: ingress-nginx-public
 spec:
-  replicas: 10
+  replicas: 1
   selector:
     matchLabels:
-      app: ingress-nginx-public
+      app.kubernetes.io/name: ingress-nginx-public
+      app.kubernetes.io/part-of: ingress-nginx-public
   template:
     metadata:
       labels:
-        app: ingress-nginx-public
+        app.kubernetes.io/name: ingress-nginx-public
+        app.kubernetes.io/part-of: ingress-nginx-public
       annotations:
-        prometheus.io/port: '10254'
-        prometheus.io/scrape: 'true'
+        prometheus.io/port: "10254"
+        prometheus.io/scrape: "true"
     spec:
       affinity:
         nodeAffinity:
@@ -280,30 +215,38 @@ spec:
               - key: provider
                 operator: In
                 values:
-                - aliyun
+                - huawei
               - key: role
                 operator: In
                 values:
-                - common
+                - ceph
               - key: region
                 operator: In
                 values:
-                - beijing
-      serviceAccountName: nginx-ingress-serviceaccount-public
+                - shanghai
+      hostNetwork: true
+      serviceAccountName: nginx-ingress-serviceaccount
       containers:
         - name: nginx-ingress-controller
-          image: statemood/nginx-ingress-controller:0.15.0.1
+          image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.24.1
           args:
             - /nginx-ingress-controller
-            - --default-backend-service=$(POD_NAMESPACE)/default-http-backend-public
             - --configmap=$(POD_NAMESPACE)/nginx-configuration-public
             - --tcp-services-configmap=$(POD_NAMESPACE)/tcp-services-public
             - --udp-services-configmap=$(POD_NAMESPACE)/udp-services-public
             - --publish-service=$(POD_NAMESPACE)/ingress-nginx-public
             - --annotations-prefix=nginx.ingress.kubernetes.io
             - --election-id=ingress-controller-leader-public
-            - --enable-dynamic-configuration
             - --ingress-class=public
+          securityContext:
+            allowPrivilegeEscalation: true
+            capabilities:
+              drop:
+                - ALL
+              add:
+                - NET_BIND_SERVICE
+            # www-data -> 33
+            runAsUser: 33
           env:
             - name: POD_NAME
               valueFrom:
@@ -314,10 +257,10 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
           ports:
-          - name: http
-            containerPort: 80
-          - name: https
-            containerPort: 443
+            - name: http
+              containerPort: 80
+            - name: https
+              containerPort: 443
           livenessProbe:
             failureThreshold: 3
             httpGet:
@@ -327,7 +270,7 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 10
             successThreshold: 1
-            timeoutSeconds: 1
+            timeoutSeconds: 10
           readinessProbe:
             failureThreshold: 3
             httpGet:
@@ -336,13 +279,4 @@ spec:
               scheme: HTTP
             periodSeconds: 10
             successThreshold: 1
-            timeoutSeconds: 1
-          resources:
-            limits:
-              cpu: 2
-              memory: 2Gi
-            requests:
-              cpu: 2
-              memory: 2Gi
-          securityContext:
-            runAsNonRoot: false
+            timeoutSeconds: 10
