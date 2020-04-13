@@ -1,14 +1,14 @@
 # --------------------------------------------
 # Created by Lin Ru, 2018.01.06
-#            Lin.Ru@msn.com
+#            Lin.ru@msn.com
 #
 # Project dockerfiles:
 #    https://github.com/Statemood/dockerfiles
 # --------------------------------------------
 
-FROM alpine:edge
+FROM alpine:3.11
 
-RUN  rs="https://mirrors.aliyun.com/alpine/edge"    && \
+RUN  rs="https://mirrors.ustc.edu.cn/alpine/v3.11"  && \
      rf="/etc/apk/repositories"                     && \
      tz="Asia/Shanghai"                             && \
      echo -e "$rs/main/\n$rs/community/" > $rf      && \
@@ -17,4 +17,4 @@ RUN  rs="https://mirrors.aliyun.com/alpine/edge"    && \
      apk add curl acl tzdata                        && \
      cp -rfv /usr/share/zoneinfo/$tz /etc/localtime && \
      echo "$tz" > /etc/timezone                     && \
-     apk del tzdata                                 
+     apk del tzdata 

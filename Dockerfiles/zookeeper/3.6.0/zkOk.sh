@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 # Copyright 2016 The Kubernetes Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +14,10 @@
 # limitations under the License.
 
 # zkOk.sh uses the ruok ZooKeeper four letter work to determine if the instance
-# is health. The $? variable will be set to 0 if server responds that it is 
+# is health. The $? variable will be set to 0 if server responds that it is
 # healthy, or 1 if the server fails to respond.
 
 ZK_CLIENT_PORT=${ZK_CLIENT_PORT:-2181}
 OK=$(echo ruok | nc 127.0.0.1 $ZK_CLIENT_PORT)
-if [ "$OK" == "imok" ]; then
-    exit 0
-else
-    exit 1
-fi
+
+test "$OK" == "imok" && exit 0 || exit 1
