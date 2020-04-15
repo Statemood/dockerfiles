@@ -6,7 +6,7 @@
 #    https://github.com/Statemood/dockerfiles
 # --------------------------------------------
 
-FROM statemood/jre:11.0.5
+FROM statemood/jre:1105
 
 RUN apk update                               && \
     apk upgrade                              && \
