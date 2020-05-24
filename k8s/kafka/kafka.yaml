@@ -48,7 +48,7 @@ spec:
           mountPath: /var/lib/kafka
         - name: config
           mountPath: /opt/kafka/config/server.properties
-          : server.properties
+          subPath: server.properties
         readinessProbe:
           exec:
            command:

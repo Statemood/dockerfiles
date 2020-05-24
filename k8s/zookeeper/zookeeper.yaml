@@ -54,7 +54,7 @@ spec:
     spec:
       initContainers:
       - name: init-dir
-        image: nat-harbor.daocloud.io/os/alpine:3.11
+        image: statemood/alpine:3.11
         command:
         - /bin/sh
         - -c
@@ -83,7 +83,7 @@ spec:
         - containerPort: 8080
           name: admin
         env:
-        - name : ZK_REPLICAS
+        - name : ZK_INIT_REPLICAS
           value: "3"
         - name:  ZK_4LW_COMMANDS_WHITELIST
           value: "ruok, cons, stat, mntr"
@@ -155,4 +155,4 @@ spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: 20Gi
+          storage: 10Gi
