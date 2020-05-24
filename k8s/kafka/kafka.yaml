@@ -2,20 +2,21 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: kafka
-  namespace: default
 spec:
   serviceName: kafka-svc
   replicas: 3
+  selector:
+    matchLabels:
+      app: kafka
   template:
     metadata:
       labels:
         app: kafka
     spec:
-
-      terminationGracePeriodSeconds: 180
+      terminationGracePeriodSeconds: 75
       initContainers:
-      - name: init-data-dir
-        image: busybox
+      - name: init
+        image: nat-harbor.daocloud.io/os/alpine:3.11
         command:
         - sh
         - -c
@@ -24,23 +25,26 @@ spec:
         - name: data
           mountPath: /data
       containers:
-      - name: k8skafka
+      - name: kafka
         imagePullPolicy: Always
-        image: statemood/kafka:2.1.0
+        image: nat-harbor.daocloud.io/services/kafka:2.4.1
         command:
         - sh
         - -c
         - "/opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties --override broker.id=${HOSTNAME##*-}"
         resources:
           requests:
-            memory: "1Gi"
-            cpu: 500m
+            memory: 4Gi
+            cpu: 800m
+          limits:
+            memory: 4Gi
+            cpu: 800m
         ports:
         - containerPort: 9093
           name: server
         env:
         - name: KAFKA_HEAP_OPTS
-          value : "-Xmx512M -Xms512M"
+          value : "-Xmx2g -Xms2g"
         - name: KAFKA_OPTS
           value: "-Dlogging.level=INFO"
         volumeMounts:
@@ -56,17 +60,18 @@ spec:
             - -c
             - "/opt/kafka/bin/kafka-topics.sh --list --zookeeper zk-0.zk-svc:2181,zk-1.zk-svc:2181,zk-2.zk-svc:2181"
       securityContext:
-        runAsUser: 205
-        fsGroup: 205
+        runAsUser: 500
+        fsGroup: 500
       volumes:
       - name: config
         configMap:
           defaultMode: 0644
-          name: kafka
+          name: kafka-config
   volumeClaimTemplates:
   - metadata:
       name: data
     spec:
+      storageClassName: data
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
