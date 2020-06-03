@@ -110,7 +110,7 @@ data:
       ssl.certificate: "/etc/filebeat/kafka/ssl/kafka.pem"
       ssl.certificate_authorities: ["/etc/filebeat/kafka/ssl/ca.pem"]
       ssl.supported_protocols: [TLSv1.2]
-      hosts: ["kafka-0.kafka-svc:9092", "kafka-1.kafka-svc:9092", "kafka-2.kafka-svc:9092"]
+      hosts: ["kafka-0.kafka-svc:9192", "kafka-1.kafka-svc:9192", "kafka-2.kafka-svc:9192"]
       topic: "%{[fields.topic]}"
       partition.round_robin:
         reachable_only: false
