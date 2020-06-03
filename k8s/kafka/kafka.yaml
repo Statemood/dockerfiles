@@ -16,7 +16,7 @@ spec:
       terminationGracePeriodSeconds: 75
       initContainers:
       - name: init
-        image: nat-harbor.daocloud.io/os/alpine:3.11
+        image: statemood/alpine:3.11
         command:
         - sh
         - -c
@@ -27,7 +27,7 @@ spec:
       containers:
       - name: kafka
         imagePullPolicy: Always
-        image: nat-harbor.daocloud.io/services/kafka:2.4.1
+        image: statemood/kafka:2.4.1
         command:
         - sh
         - -c
