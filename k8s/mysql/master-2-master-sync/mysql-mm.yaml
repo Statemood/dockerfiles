@@ -1,9 +1,10 @@
 apiVersion: v1
-kind: ConfigMap
+kind: Secret
 metadata:
   name: mysql-auth
   labels:
     app: mysql
+type: Opaque
 data:
   hc.password:   dTNx2ldzJDtc3dYQozc=
   repl.password: MjhuMxRKW3N4eEtzb1A=
@@ -137,17 +138,17 @@ spec:
         env:
         - name:  MYSQL_ROOT_PASSWORD
           valueFrom:
-            configMapKeyRef:
+            secretKeyRef:
               key: root.password
               name: mysql-auth
         - name:  MYSQL_REPL_PASSWORD
           valueFrom:
-            configMapKeyRef:
+            secretKeyRef:
               key: repl.password
               name: mysql-auth
         - name:  MYSQL_HC_PASSWORD
           valueFrom:
-            configMapKeyRef:
+            secretKeyRef:
               key: hc.password
               name: mysql-auth
         - name:  MYSQL_RUN_ROLE
@@ -174,8 +175,8 @@ spec:
           initialDelaySeconds: 10
           timeoutSeconds: 5
         volumeMounts:
-        - mountPath: /data
-          name: data
+        - name: data
+          mountPath: /data
         - name: scripts
           mountPath: /opt
       volumes:
@@ -211,12 +212,12 @@ spec:
         env:
         - name:  MYSQL_ROOT_PASSWORD
           valueFrom:
-            configMapKeyRef:
+            secretKeyRef:
               key: root.password
               name: mysql-auth
         - name:  MYSQL_REPL_PASSWORD
           valueFrom:
-            configMapKeyRef:
+            secretKeyRef:
               key: repl.password
               name: mysql-auth
         - name: NAMESPACE
