@@ -1,3 +1,0 @@
-# Templeates
-
-## kubernetes yaml files
